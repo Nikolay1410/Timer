@@ -2,11 +2,17 @@ package com.example.timer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -18,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonReset;
     private int seconds = 0;
     private boolean isRunning = false;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         buttonStart = findViewById(R.id.buttonStart);
         buttonPause = findViewById(R.id.buttonPause);
         buttonReset = findViewById(R.id.buttonReset);
+        pb =  (ProgressBar) findViewById(R.id.progressBarToday);
 
         if(savedInstanceState!=null) {
             seconds = savedInstanceState.getInt("seconds");
@@ -34,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         runTimer();
+
 
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 isRunning = false;
                 seconds = 0;
+                pb.setProgress(0);
             }
         });
     }
@@ -81,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isRunning){
                     seconds++;
+
                 }
                 handler.postDelayed(this, 1000);
+                pb.setProgress(seconds);
             }
         });
     }
