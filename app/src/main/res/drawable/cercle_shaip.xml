@@ -4,14 +4,16 @@
 <shape
     android:innerRadiusRatio="3"
     android:shape="ring"
-    android:thicknessRatio="7.0"
+    android:thickness="13dp"
     android:useLevel="true"
     >
     <gradient
+        android:angle="0"
         android:startColor="#fb0000"
         android:endColor="#00FF00"
         android:centerColor="#fbf400"
-        android:type="sweep" />
+        android:type="sweep"
+        android:useLevel="false"/>
 </shape>
 </item>
 </layer-list>

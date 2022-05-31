@@ -22,7 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonStart;
     private Button buttonPause;
     private Button buttonReset;
+    private Handler handler;
     private int seconds = 0;
+    private int secs = 0;
+    private int fet = 0;
+    private int minutes;
     private boolean isRunning = false;
     private ProgressBar pb;
 
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         buttonStart = findViewById(R.id.buttonStart);
         buttonPause = findViewById(R.id.buttonPause);
         buttonReset = findViewById(R.id.buttonReset);
+        handler = new Handler();
         pb =  (ProgressBar) findViewById(R.id.progressBarToday);
 
         if(savedInstanceState!=null) {
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         runTimer();
-
+        progressBarAnimation();
 
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 isRunning = false;
                 seconds = 0;
-                pb.setProgress(0);
+                fet = 0;
             }
         });
     }
@@ -78,23 +83,36 @@ public class MainActivity extends AppCompatActivity {
 
     //Timer method
     private void runTimer(){
-        final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
             public void run() {
                 int hours = seconds/3600;
-                int minutes = (seconds%3600)/60;
-                int secs = seconds%60;
+                minutes = (seconds%3600)/60;
+                secs = seconds%60;
+                if (secs == 0){
+                    fet = 0;
+                }
 
                 String time = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, secs);
                 textViewTime.setText(time);
 
                 if (isRunning){
                     seconds++;
-
                 }
                 handler.postDelayed(this, 1000);
-                pb.setProgress(seconds);
+            }
+        });
+    }
+    private void progressBarAnimation() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (isRunning) {
+                    fet++;
+                }
+                handler.postDelayed(this, 1250);
+                pb.setProgress(fet);
+
             }
         });
     }
